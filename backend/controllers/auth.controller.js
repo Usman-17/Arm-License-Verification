@@ -142,3 +142,22 @@ export const adminLogin = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+// PATH     :  /api/auth/admin/logout
+// METHOD   : POST
+// ACCESS   : PRIVATE
+// DESC     : Logout a Admin Account
+export const adminLogout = async (req, res) => {
+  try {
+    res.clearCookie("jwt", {
+      httpOnly: true,
+      sameSite: "strict",
+    });
+    res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    console.log("Error in logoutAdmin controller", error.message);
+    res
+      .status(500)
+      .json({ error: "Unable to complete logout. Please try again later." });
+  }
+};
