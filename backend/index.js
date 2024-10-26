@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import dbConnect from "./db/ConnectMongoDB.js";
 // Imports End
 
 const app = express();
@@ -24,4 +25,5 @@ app.use(
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  dbConnect();
 });
