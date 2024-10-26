@@ -88,3 +88,57 @@ export const signup = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+// PATH     : /api/auth/admin/login
+// METHOD   : POST
+// ACCESS   : PRIVATE
+// DESC     : Login a Admin
+export const adminLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Validate email and password
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and Password are required" });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        error: "Please enter a valid email address",
+      });
+    }
+
+    // Find admin by email
+    const admin = await User.findOne({ email });
+
+    // Check if admin exists
+    if (!admin || admin.role !== "admin") {
+      return res.status(403).json({ error: "Invalid email or password" });
+    }
+
+    // Compare provided password with hashed password
+    const isPasswordCorrect = await bcrypt.compare(password, admin.password);
+
+    if (!isPasswordCorrect) {
+      return res.status(400).json({ error: "Incorrect password" });
+    }
+
+    // Generate token and set cookie
+    generateTokenAndSetCookie(admin, res);
+
+    // Send admin info in response
+    res.status(200).json({
+      status: "success",
+      data: {
+        _id: admin._id,
+        fullName: admin.fullName,
+        email: admin.email,
+        mobile: admin.mobile,
+      },
+    });
+  } catch (error) {
+    console.error("Error in adminLogin controller:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
