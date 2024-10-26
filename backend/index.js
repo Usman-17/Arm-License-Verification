@@ -3,6 +3,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import dbConnect from "./db/ConnectMongoDB.js";
+
+import authRoutes from "./routes/auth.route.js";
+
 // Imports End
 
 const app = express();
@@ -20,6 +23,9 @@ app.use(
     credentials: true,
   })
 );
+
+// Routes Setup
+app.use("/api/auth", authRoutes);
 
 // Running App
 const PORT = process.env.PORT || 9000;
