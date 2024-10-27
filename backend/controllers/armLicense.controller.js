@@ -96,7 +96,7 @@ export const updateLicense = async (req, res) => {
 
 // PATH     : /api/license/all
 // METHOD   : GET
-// ACCESS   : PUBLIC
+// ACCESS   : PRIVATE
 // DESC     : Get all Licenses
 export const getAllLicenses = async (req, res) => {
   try {
@@ -108,5 +108,20 @@ export const getAllLicenses = async (req, res) => {
   } catch (error) {
     console.log("Error in getAllLicenses Controller:", error.message);
     return res.status(500).json({ error: error.message });
+  }
+};
+
+// PATH     : /api/license/id"
+// METHOD   : GET
+// ACCESS   : PRIVATE
+// DESC     : Get a license
+export const getlicense = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const license = await ArmLicense.findById(id);
+    res.status(200).json(license);
+  } catch (error) {
+    console.log("Error in getlicense Controller", error.message);
+    res.status(500).json({ error: error.message });
   }
 };
