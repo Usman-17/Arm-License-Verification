@@ -161,3 +161,20 @@ export const adminLogout = async (req, res) => {
       .json({ error: "Unable to complete logout. Please try again later." });
   }
 };
+
+// PATH     : /api/auth/me
+// METHOD   : POST
+// ACCESS   : PRIVATE
+// DESC     : Check User authenticated
+export const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select("-password");
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    console.log("Error in getMe controller:", error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
