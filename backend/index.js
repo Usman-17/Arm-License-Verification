@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import dbConnect from "./db/ConnectMongoDB.js";
 
 import authRoutes from "./routes/auth.route.js";
+import licenseRoutes from "./routes/armLicense.route.js";
 
 // Imports End
 
@@ -26,6 +27,7 @@ app.use(
 
 // Routes Setup
 app.use("/api/auth", authRoutes);
+app.use("/api/license", licenseRoutes);
 
 // Running App
 const PORT = process.env.PORT || 9000;
