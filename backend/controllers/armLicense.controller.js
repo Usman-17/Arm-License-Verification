@@ -51,3 +51,45 @@ export const createLicense = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// PATH     : /api/license/update/id
+// METHOD   : PUT
+// ACCESS   : PRIVATE
+// DESC     : Update License
+export const updateLicense = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      licenseNumber,
+      fullName,
+      dateOfBirth,
+      address,
+      weaponType,
+      issueDate,
+      expiryDate,
+    } = req.body;
+
+    const license = await ArmLicense.findById(id);
+
+    if (!license) {
+      return res.status(404).json({ error: "License not found" });
+    }
+
+    if (licenseNumber) license.licenseNumber = licenseNumber;
+    if (fullName) license.fullName = fullName;
+    if (dateOfBirth) license.dateOfBirth = dateOfBirth;
+    if (address) license.address = address;
+    if (weaponType) license.weaponType = weaponType;
+    if (issueDate) license.issueDate = issueDate;
+    if (expiryDate) license.expiryDate = expiryDate;
+
+    await license.save();
+    res.status(200).json({
+      success: true,
+      license,
+    });
+  } catch (error) {
+    console.error("Error in updateLicense", error.message);
+    res.status(500).json({ error: error.message });
+  }
+};

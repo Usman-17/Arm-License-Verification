@@ -5,7 +5,6 @@ const armLicenseSchema = new mongoose.Schema(
     licenseNumber: {
       type: String,
       required: true,
-      unique: true,
       minlength: [5, "License number must be at least 5 characters long"],
     },
 
