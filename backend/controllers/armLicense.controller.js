@@ -93,3 +93,20 @@ export const updateLicense = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// PATH     : /api/license/all
+// METHOD   : GET
+// ACCESS   : PUBLIC
+// DESC     : Get all Licenses
+export const getAllLicenses = async (req, res) => {
+  try {
+    const licenses = await ArmLicense.find().sort({ createdAt: -1 });
+
+    if (!licenses || licenses.length === 0) return res.status(200).json([]);
+
+    return res.status(200).json(licenses);
+  } catch (error) {
+    console.log("Error in getAllLicenses Controller:", error.message);
+    return res.status(500).json({ error: error.message });
+  }
+};
