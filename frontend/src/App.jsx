@@ -1,8 +1,10 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
 import Header from "./components/Header";
 import LoginPage from "./pages/LoginPage";
 import Homepage from "./pages/Homepage";
+import LicenseListPage from "./pages/LicenseListPage";
 
 export default function App() {
   return (
@@ -12,6 +14,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/licenses/manage" element={<LicenseListPage />} />
         </Routes>
 
         <Toaster
