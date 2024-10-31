@@ -1,9 +1,35 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import logo from "../assets/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Header = () => {
   const { data: authUser } = useQuery({ queryKey: ["authUser"] });
+
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const { mutateAsync: logoutMutation, error } = useMutation({
+    mutationFn: async () => {
+      const res = await fetch(`/api/auth/admin/logout`, { method: "POST" });
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to logout user");
+      }
+      return data;
+    },
+
+    onSuccess: () => {
+      toast.success("Logged out successfully!");
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
+      navigate("/");
+    },
+
+    onError: () => {
+      toast.error(error.message);
+    },
+  });
 
   return (
     <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[8vw]">
@@ -31,7 +57,10 @@ const Header = () => {
                   Manage License
                 </Link>
               </li>
-              <li className="text-gray-800 transition-colors duration-300 ease-in-out hover:text-purple-700 cursor-pointer">
+              <li
+                onClick={() => logoutMutation()}
+                className="text-gray-800 transition-colors duration-300 ease-in-out hover:text-purple-700 cursor-pointer"
+              >
                 Logout
               </li>
             </ul>
