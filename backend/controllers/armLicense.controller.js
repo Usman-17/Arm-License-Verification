@@ -125,3 +125,26 @@ export const getlicense = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// PATH     : /api/license/:id"
+// METHOD   : DELETE
+// ACCESS   : PRIVATE
+// DESC     : Delete License
+
+export const deleteLicense = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const license = await ArmLicense.findById(id);
+
+    if (!license) {
+      return res.status(404).json({ error: "License not found" });
+    }
+
+    await ArmLicense.findByIdAndDelete(id);
+    res.status(200).json({ message: "License deleted successfully" });
+  } catch (error) {
+    console.error("Error in deleteLicense controller:", error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
