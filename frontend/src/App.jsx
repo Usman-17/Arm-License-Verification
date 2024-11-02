@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import Homepage from "./pages/Homepage";
 import LicenseListPage from "./pages/LicenseListPage";
 import { useQuery } from "@tanstack/react-query";
+import AddLicensePage from "./pages/AddLicensePage";
 
 export default function App() {
   const { data: authUser } = useQuery({
@@ -33,9 +34,14 @@ export default function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Homepage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route
-            path="/login"
-            element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+            path="/license/add"
+            element={authUser ? <AddLicensePage /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/license/update/:id"
+            element={authUser ? <AddLicensePage /> : <Navigate to="/" />}
           />
           <Route path="/licenses/manage" element={<LicenseListPage />} />
         </Routes>
