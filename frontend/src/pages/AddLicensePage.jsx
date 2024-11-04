@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import toast from "react-hot-toast";
 import { Redo } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 
 const AddLicensePage = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     licenseNumber: "",
     fullName: "",
@@ -15,39 +19,61 @@ const AddLicensePage = () => {
     expiryDate: "",
   });
 
+  useEffect(() => {
+    if (id) {
+      const fetchLicense = async () => {
+        const res = await fetch(`/api/license/${id}`);
+        const data = await res.json();
+
+        setFormData({
+          licenseNumber: data.licenseNumber || "",
+          fullName: data.fullName || "",
+          dateOfBirth: data.dateOfBirth || "",
+          address: data.address || "",
+          weaponType: data.weaponType || "",
+          issueDate: data.issueDate || "",
+          expiryDate: data.expiryDate || "",
+        });
+      };
+      fetchLicense();
+    }
+  }, [id]);
+
   // Mutation to save License
   const {
     mutate: saveLicense,
-    isLoading: isPending,
+    isPending,
     error,
     isError,
   } = useMutation({
-    mutationFn: async (data) => {
-      const res = await fetch("/api/license/create", {
-        method: "POST",
+    mutationFn: async (formData) => {
+      const method = id ? "PUT" : "POST";
+      const url = id ? `/api/license/update/${id}` : "/api/license/create";
+
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(formData),
       });
+
       if (!res.ok) {
         const result = await res.json();
         throw new Error(result.error || "Failed to save license");
       }
       return res.json();
     },
+
     onSuccess: () => {
-      toast.success("License created successfully");
-      setFormData({
-        licenseNumber: "",
-        fullName: "",
-        dateOfBirth: "",
-        address: "",
-        weaponType: "",
-        issueDate: "",
-        expiryDate: "",
-      });
+      toast.success(
+        `License "${formData.licenseNumber}" ${
+          id ? "updated" : "created"
+        } successfully`
+      );
+      navigate("/licenses/manage");
     },
+
     onError: () => {
-      toast.error("Failed to create License");
+      toast.error(`Failed to ${id ? "update" : "create"} License`);
     },
   });
 
@@ -63,7 +89,10 @@ const AddLicensePage = () => {
     <div className="py-8 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[8vw]">
       <div className="flex items-center justify-between mb-5">
         <div>
-          <div className="text-xl font-semibold">Add New License</div>
+          <div className="text-xl font-semibold">
+            {id ? "Edit License" : "Add New License"}
+          </div>
+
           <p className="text-xs sm:text-sm text-gray-600">
             Fill out the details below to add a license
           </p>
@@ -137,8 +166,9 @@ const AddLicensePage = () => {
               <input
                 id="dateOfBirth"
                 name="dateOfBirth"
-                type="date"
+                type="text"
                 required
+                placeholder="DD-MM-YYYY"
                 className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-800"
                 value={formData.dateOfBirth}
                 onChange={handleInputChange}
@@ -197,8 +227,9 @@ const AddLicensePage = () => {
               <input
                 id="issueDate"
                 name="issueDate"
-                type="date"
+                type="text"
                 required
+                placeholder="DD-MM-YYYY"
                 className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-800"
                 value={formData.issueDate}
                 onChange={handleInputChange}
@@ -217,9 +248,10 @@ const AddLicensePage = () => {
             <input
               id="expiryDate"
               name="expiryDate"
-              type="date"
+              type="text"
               required
               className="mt-1 w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-gray-800"
+              placeholder="DD-MM-YYYY"
               value={formData.expiryDate}
               onChange={handleInputChange}
               aria-label="Expiry Date"
@@ -237,7 +269,7 @@ const AddLicensePage = () => {
             disabled={isPending}
             className="mt-4 w-full sm:w-auto px-10 py-2 text-white bg-purple-700 hover:bg-purple-800 rounded-lg focus:outline-none"
           >
-            {isPending ? "Saving..." : "Add License"}
+            {isPending ? "Saving..." : id ? "Update License" : "Add License"}
           </button>
         </fieldset>
       </form>

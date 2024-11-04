@@ -90,10 +90,12 @@ const LicenseListPage = () => {
                     <td className="px-6 py-4">{license.weaponType}</td>
                     <td className="px-6 py-4 flex gap-2">
                       {/* Edit Btn */}
-                      <button className="flex items-center gap-1 px-3 py-1 text-white bg-blue-500 hover:bg-blue-600 rounded">
-                        <Edit3 size={16} />
-                        Edit
-                      </button>
+                      <Link to={`/license/update/${license._id}`}>
+                        <button className="flex items-center gap-1 px-3 py-1 text-white bg-blue-500 hover:bg-blue-600 rounded">
+                          <Edit3 size={16} />
+                          Edit
+                        </button>
+                      </Link>
 
                       {/* Delete Btn */}
                       <button
