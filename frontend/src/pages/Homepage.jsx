@@ -34,15 +34,16 @@ const Homepage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 pt-20">
-      <h1 className="text-2xl font-semibold text-gray-800 mb-6">
-        Search License Details
+    <div className="flex flex-col items-center justify-center p-4 pt-14 sm:pt-20">
+      <h1 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-3 sm:mb-5">
+        Search Arm License Details
       </h1>
 
       <form onSubmit={handleSubmit} className="w-full max-w-md mb-6">
         <div className="relative">
           <input
             type="text"
+            inputMode="numeric"
             value={licenseNumber}
             onChange={handleInputChange}
             placeholder="Enter License Number"

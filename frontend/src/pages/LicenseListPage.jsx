@@ -37,7 +37,7 @@ const LicenseListPage = () => {
   return (
     <>
       <div className="py-8 px-4 sm:px-[5vw] md:px-[7vw] lg:px-[8vw]">
-        <div className="flex items-center justify-between mb-5">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 pb-10">
           <div>
             <div className="text-xl font-semibold">View All Licenses</div>
             <p className="text-xs sm:text-sm text-gray-600">
@@ -79,8 +79,11 @@ const LicenseListPage = () => {
             <tbody>
               {licenses && licenses.length > 0 ? (
                 licenses.map((license, index) => (
-                  <tr key={license.licenseNumber} className="border-b">
-                    <td className="px-6 py-4 text-nowrap">{index + 1}</td>
+                  <tr
+                    key={license.licenseNumber}
+                    className="border-b text-nowrap"
+                  >
+                    <td className="px-6 py-4">{index + 1}</td>
                     <td className="px-6 py-4 font-medium text-gray-900">
                       {license.licenseNumber}
                     </td>

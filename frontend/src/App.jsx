@@ -34,7 +34,10 @@ export default function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Homepage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/login"
+            element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+          />
           <Route
             path="/license/add"
             element={authUser ? <AddLicensePage /> : <Navigate to="/" />}
@@ -43,7 +46,10 @@ export default function App() {
             path="/license/update/:id"
             element={authUser ? <AddLicensePage /> : <Navigate to="/" />}
           />
-          <Route path="/licenses/manage" element={<LicenseListPage />} />
+          <Route
+            path="/licenses/manage"
+            element={authUser ? <LicenseListPage /> : <Navigate to="/" />}
+          />
         </Routes>
 
         <Toaster
