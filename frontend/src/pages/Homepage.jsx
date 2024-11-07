@@ -43,7 +43,6 @@ const Homepage = () => {
         <div className="relative">
           <input
             type="text"
-            inputMode="numeric"
             value={licenseNumber}
             onChange={handleInputChange}
             placeholder="Enter License Number"
