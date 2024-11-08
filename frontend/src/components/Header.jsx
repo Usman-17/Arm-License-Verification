@@ -51,34 +51,36 @@ const Header = () => {
           >
             Home
           </Link>
-          {authUser ? (
-            <>
-              <Link
-                to="/license/add"
-                className="text-gray-800 transition-colors duration-300 hover:text-purple-700 hover:underline"
-              >
-                Add License
-              </Link>
-              <Link
-                to="/licenses/manage"
-                className="text-gray-800 transition-colors duration-300 hover:text-purple-700 hover:underline"
-              >
-                Manage License
-              </Link>
-              <button
-                onClick={() => logoutMutation()}
-                className="text-gray-800 transition-colors duration-300 hover:text-purple-700 cursor-pointer"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
+
+          <Link
+            to="/license/add"
+            className="text-gray-800 transition-colors duration-300 hover:text-purple-700 hover:underline"
+          >
+            Add License
+          </Link>
+          <Link
+            to="/licenses/manage"
+            className="text-gray-800 transition-colors duration-300 hover:text-purple-700 hover:underline"
+          >
+            Manage License
+          </Link>
+
+          {!authUser && (
             <Link
               to="/login"
               className="text-gray-800 transition-colors duration-300 hover:text-purple-700"
             >
               Login
             </Link>
+          )}
+
+          {authUser && (
+            <button
+              onClick={() => logoutMutation()}
+              className="text-gray-800 transition-colors duration-300 hover:text-purple-700 cursor-pointer"
+            >
+              Logout
+            </button>
           )}
         </nav>
 
@@ -102,33 +104,23 @@ const Header = () => {
           >
             Home
           </Link>
-          {authUser ? (
-            <>
-              <Link
-                to="/license/add"
-                onClick={toggleMobileMenu}
-                className="block py-2 text-gray-800 transition-colors duration-300 hover:text-purple-700"
-              >
-                Add License
-              </Link>
-              <Link
-                to="/licenses/manage"
-                onClick={toggleMobileMenu}
-                className="block py-2 text-gray-800 transition-colors duration-300 hover:text-purple-700"
-              >
-                Manage License
-              </Link>
-              <button
-                onClick={() => {
-                  toggleMobileMenu();
-                  logoutMutation();
-                }}
-                className="block w-full text-left py-2 text-gray-800 transition-colors duration-300 hover:text-purple-700"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
+
+          <Link
+            to="/license/add"
+            onClick={toggleMobileMenu}
+            className="block py-2 text-gray-800 transition-colors duration-300 hover:text-purple-700"
+          >
+            Add License
+          </Link>
+          <Link
+            to="/licenses/manage"
+            onClick={toggleMobileMenu}
+            className="block py-2 text-gray-800 transition-colors duration-300 hover:text-purple-700"
+          >
+            Manage License
+          </Link>
+
+          {!authUser && (
             <Link
               to="/login"
               onClick={toggleMobileMenu}
@@ -136,6 +128,18 @@ const Header = () => {
             >
               Login
             </Link>
+          )}
+
+          {authUser && (
+            <button
+              onClick={() => {
+                toggleMobileMenu();
+                logoutMutation();
+              }}
+              className="block w-full text-left py-2 text-gray-800 transition-colors duration-300 hover:text-purple-700"
+            >
+              Logout
+            </button>
           )}
         </div>
       )}

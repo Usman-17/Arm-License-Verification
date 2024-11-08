@@ -40,15 +40,15 @@ export default function App() {
           />
           <Route
             path="/license/add"
-            element={authUser ? <AddLicensePage /> : <Navigate to="/" />}
+            element={authUser ? <AddLicensePage /> : <Navigate to="/login" />}
           />
           <Route
             path="/license/update/:id"
-            element={authUser ? <AddLicensePage /> : <Navigate to="/" />}
+            element={authUser ? <AddLicensePage /> : <Navigate to="/login" />}
           />
           <Route
             path="/licenses/manage"
-            element={authUser ? <LicenseListPage /> : <Navigate to="/" />}
+            element={authUser ? <LicenseListPage /> : <Navigate to="/login" />}
           />
         </Routes>
 
